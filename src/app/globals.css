@@ -1,0 +1,28 @@
+@config "../../tailwind.config.ts";
+@import "tailwindcss";
+
+:root {
+  --background: #fdf2f7;
+  --foreground: #333333;
+  --primary: #e91e63;
+  --primary-hover: #c2185b;
+  --primary-light: #f06292;
+  --primary-border: #f5c2d9;
+  --primary-bg: #fdf2f7;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+  --color-primary-border: var(--primary-border);
+  --color-primary-bg: var(--primary-bg);
+  --font-sans: var(--font-inter), var(--font-noto), sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
