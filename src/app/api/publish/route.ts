@@ -7,6 +7,7 @@ type PublishRequestBody = {
   listingDescription: string;
   price: number;
   coverImageUrl?: string;
+  stripePaymentLink?: string;
 };
 
 function isNonEmptyString(v: unknown): v is string {
@@ -43,6 +44,10 @@ function assertBody(body: unknown): PublishRequestBody {
     price: parsePrice(b.price),
     coverImageUrl:
       typeof b.coverImageUrl === "string" ? b.coverImageUrl.trim() : undefined,
+    stripePaymentLink:
+      typeof b.stripePaymentLink === "string"
+        ? b.stripePaymentLink.trim()
+        : undefined,
   };
 }
 
@@ -64,6 +69,11 @@ export async function POST(request: Request) {
         ? body.coverImageUrl
         : null;
 
+    const stripePaymentLink =
+      body.stripePaymentLink && body.stripePaymentLink.length > 0
+        ? body.stripePaymentLink
+        : null;
+
     const { data: updated, error } = await supabase
       .from("materials")
       .update({
@@ -72,6 +82,7 @@ export async function POST(request: Request) {
         listing_description: body.listingDescription,
         price: body.price,
         cover_image_url: coverImageUrl,
+        stripe_payment_link: stripePaymentLink,
       })
       .eq("id", body.materialId)
       .eq("user_id", user.id)

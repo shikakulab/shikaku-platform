@@ -44,6 +44,7 @@ export default function SellNewPage() {
   const [title, setTitle] = useState("");
   const [listingDescription, setListingDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [stripePaymentLink, setStripePaymentLink] = useState("");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfFileName, setPdfFileName] = useState("");
   const [coverImageUrl, setCoverImageUrl] = useState("");
@@ -144,6 +145,7 @@ export default function SellNewPage() {
           fileUrl,
           coverImageUrl: coverImageUrl || undefined,
           price: priceNumber,
+          stripePaymentLink: stripePaymentLink || undefined,
         }),
       });
 
@@ -306,6 +308,23 @@ export default function SellNewPage() {
               placeholder="0と入力すると無料になります"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              className={inputClassName}
+            />
+          </div>
+
+          <div>
+            <label
+              htmlFor="stripePaymentLink"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Stripe決済リンク（任意）
+            </label>
+            <input
+              id="stripePaymentLink"
+              type="text"
+              placeholder="https://buy.stripe.com/..."
+              value={stripePaymentLink}
+              onChange={(e) => setStripePaymentLink(e.target.value)}
               className={inputClassName}
             />
           </div>

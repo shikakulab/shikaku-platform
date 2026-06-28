@@ -7,6 +7,7 @@ type UpdateMaterialBody = {
   price: number;
   coverImageUrl?: string;
   fileUrl?: string;
+  stripePaymentLink?: string;
 };
 
 function isNonEmptyString(v: unknown): v is string {
@@ -42,6 +43,10 @@ function assertUpdateBody(body: unknown): UpdateMaterialBody {
     coverImageUrl:
       typeof b.coverImageUrl === "string" ? b.coverImageUrl.trim() : undefined,
     fileUrl: typeof b.fileUrl === "string" ? b.fileUrl.trim() : undefined,
+    stripePaymentLink:
+      typeof b.stripePaymentLink === "string"
+        ? b.stripePaymentLink.trim()
+        : undefined,
   };
 }
 
@@ -84,12 +89,20 @@ export async function PUT(request: Request, context: RouteContext) {
         ? body.fileUrl
         : existing.file_url;
 
+    const stripePaymentLink =
+      body.stripePaymentLink !== undefined
+        ? body.stripePaymentLink && body.stripePaymentLink.length > 0
+          ? body.stripePaymentLink
+          : null
+        : undefined;
+
     const updateData: {
       title: string;
       listing_description: string;
       price: number;
       cover_image_url: string | null;
       file_url?: string | null;
+      stripe_payment_link?: string | null;
     } = {
       title: body.title,
       listing_description: body.listingDescription,
@@ -99,6 +112,10 @@ export async function PUT(request: Request, context: RouteContext) {
 
     if (!existing.is_ai_generated) {
       updateData.file_url = fileUrl;
+    }
+
+    if (stripePaymentLink !== undefined) {
+      updateData.stripe_payment_link = stripePaymentLink;
     }
 
     const { data: updated, error } = await supabase

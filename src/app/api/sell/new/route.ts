@@ -7,6 +7,7 @@ type SellNewRequestBody = {
   fileUrl: string;
   coverImageUrl?: string;
   price: number;
+  stripePaymentLink?: string;
 };
 
 function isNonEmptyString(v: unknown): v is string {
@@ -43,6 +44,10 @@ function assertBody(body: unknown): SellNewRequestBody {
     coverImageUrl:
       typeof b.coverImageUrl === "string" ? b.coverImageUrl.trim() : undefined,
     price: parsePrice(b.price),
+    stripePaymentLink:
+      typeof b.stripePaymentLink === "string"
+        ? b.stripePaymentLink.trim()
+        : undefined,
   };
 }
 
@@ -64,6 +69,11 @@ export async function POST(request: Request) {
         ? body.coverImageUrl
         : null;
 
+    const stripePaymentLink =
+      body.stripePaymentLink && body.stripePaymentLink.length > 0
+        ? body.stripePaymentLink
+        : null;
+
     const { data: material, error } = await supabase
       .from("materials")
       .insert({
@@ -75,6 +85,7 @@ export async function POST(request: Request) {
         file_type: "pdf",
         cover_image_url: coverImageUrl,
         price: body.price,
+        stripe_payment_link: stripePaymentLink,
         is_ai_generated: false,
         is_published: true,
       })

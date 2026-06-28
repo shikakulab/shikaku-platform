@@ -59,6 +59,7 @@ export default function SellPage() {
   const [title, setTitle] = useState("");
   const [listingDescription, setListingDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [stripePaymentLink, setStripePaymentLink] = useState("");
   const [fileUrl, setFileUrl] = useState("");
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [pdfFileName, setPdfFileName] = useState("");
@@ -91,7 +92,7 @@ export default function SellPage() {
       const { data, error: fetchError } = await supabase
         .from("materials")
         .select(
-          "title, listing_description, price, cover_image_url, file_url, is_published, is_ai_generated",
+          "title, listing_description, price, cover_image_url, file_url, stripe_payment_link, is_published, is_ai_generated",
         )
         .eq("id", id)
         .eq("user_id", user.id)
@@ -106,6 +107,7 @@ export default function SellPage() {
       setTitle(data.title);
       setListingDescription(data.listing_description ?? "");
       setPrice(data.price != null ? String(data.price) : "");
+      setStripePaymentLink(data.stripe_payment_link ?? "");
       setIsPublished(data.is_published);
       setIsAiGenerated(data.is_ai_generated);
       if (data.cover_image_url) {
@@ -192,6 +194,7 @@ export default function SellPage() {
         listingDescription,
         price: priceNumber,
         coverImageUrl,
+        stripePaymentLink,
       };
 
       if (!isAiGenerated) {
@@ -363,6 +366,23 @@ export default function SellPage() {
                 }
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                className={inputClassName}
+              />
+            </div>
+
+            <div>
+              <label
+                htmlFor="stripePaymentLink"
+                className="mb-1 block text-sm font-medium text-gray-700"
+              >
+                Stripe決済リンク（任意）
+              </label>
+              <input
+                id="stripePaymentLink"
+                type="text"
+                placeholder="https://buy.stripe.com/..."
+                value={stripePaymentLink}
+                onChange={(e) => setStripePaymentLink(e.target.value)}
                 className={inputClassName}
               />
             </div>
