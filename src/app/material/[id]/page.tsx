@@ -44,8 +44,21 @@ type ReviewRow = {
   comment: string | null;
   created_at: string;
   user_id: string;
-  profiles: { display_name: string | null } | null;
+  profiles:
+    | { display_name: string | null }
+    | { display_name: string | null }[]
+    | null;
 };
+
+function getProfileDisplayName(
+  profiles: ReviewRow["profiles"],
+): string | null {
+  if (!profiles) return null;
+  if (Array.isArray(profiles)) {
+    return profiles[0]?.display_name ?? null;
+  }
+  return profiles.display_name;
+}
 
 function formatCreatedAt(dateString: string): string {
   return new Intl.DateTimeFormat("ja-JP", {
@@ -81,7 +94,7 @@ function getFileNameFromUrl(url: string): string {
 }
 
 function getReviewerName(review: ReviewRow): string {
-  const name = review.profiles?.display_name?.trim();
+  const name = getProfileDisplayName(review.profiles)?.trim();
   if (name) return name;
   return `ユーザー${review.user_id.slice(0, 6)}`;
 }
@@ -165,7 +178,7 @@ export default async function MaterialPage({ params, searchParams }: PageProps) 
         .order("created_at", { ascending: false }),
     ]);
 
-  const reviews = (reviewsRaw ?? []) as ReviewRow[];
+  const reviews = (reviewsRaw ?? []) as unknown as ReviewRow[];
   const reviewCount = reviews.length;
   const averageRating =
     reviewCount > 0
