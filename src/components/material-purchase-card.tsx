@@ -36,10 +36,10 @@ export async function MaterialPurchaseCard({
         <img
           src={coverImageUrl}
           alt={title}
-          className="aspect-video w-full object-cover"
+          className="aspect-square w-full object-cover"
         />
       ) : (
-        <div className="flex aspect-video w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
+        <div className="flex aspect-square w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
           カバー画像なし
         </div>
       )}
