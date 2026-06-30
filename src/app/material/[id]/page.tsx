@@ -165,7 +165,7 @@ export default async function MaterialPage({ params, searchParams }: PageProps) 
         .order("created_at", { ascending: false }),
     ]);
 
-  const reviews = (reviewsRaw ?? []) as ReviewRow[];
+  const reviews = (reviewsRaw ?? []) as unknown as ReviewRow[];
   const reviewCount = reviews.length;
   const averageRating =
     reviewCount > 0
