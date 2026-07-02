@@ -66,6 +66,119 @@ function toPopularMaterial(material: MaterialRow): PopularMaterial {
   return { ...material, reviewCount, averageRating };
 }
 
+function MaterialCard({
+  material,
+  showNewBadge = false,
+}: {
+  material: PopularMaterial;
+  showNewBadge?: boolean;
+}) {
+  return (
+    <Link
+      href={`/material/${material.id}`}
+      className="group flex flex-col overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+    >
+      <div className="relative w-full shrink-0" style={{ paddingTop: "100%" }}>
+        {showNewBadge && (
+          <span className="absolute top-2 right-2 z-10 rounded bg-[#DE2261] px-1.5 py-0.5 text-[10px] font-bold text-white">
+            NEW
+          </span>
+        )}
+        {material.cover_image_url ? (
+          <img
+            src={material.cover_image_url}
+            alt={material.title}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              background: getThumbnailGradient(material.certification_name),
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <span
+              style={{
+                color: "#fff",
+                fontSize: "13px",
+                fontWeight: 500,
+                padding: "0 12px",
+                textAlign: "center",
+              }}
+            >
+              {material.certification_name}
+            </span>
+          </div>
+        )}
+      </div>
+
+      <div className="flex flex-col" style={{ padding: "10px 12px" }}>
+        <p className="text-[10px] text-[#DE2261]">
+          {material.certification_name}
+        </p>
+        <h3 className="mt-1 line-clamp-2 text-xs font-medium text-gray-900">
+          {material.title}
+        </h3>
+        {material.reviewCount > 0 && (
+          <div className="mt-1.5 flex items-center gap-1">
+            <StarRating rating={material.averageRating} size="sm" />
+            <span className="text-[10px] text-gray-500">
+              ({material.reviewCount})
+            </span>
+          </div>
+        )}
+        <p className="mt-1.5 text-sm font-medium text-[#DE2261]">
+          {formatPrice(material.price)}
+        </p>
+      </div>
+    </Link>
+  );
+}
+
+function MaterialGrid({
+  items,
+  emptyMessage,
+  showNewBadgeCount = 0,
+}: {
+  items: PopularMaterial[];
+  emptyMessage: string;
+  showNewBadgeCount?: number;
+}) {
+  if (items.length === 0) {
+    return (
+      <div className="flex min-h-32 items-center justify-center rounded-[10px] border-[0.5px] border-gray-200 bg-white py-12">
+        <p className="text-sm text-gray-500">{emptyMessage}</p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {items.map((material, index) => (
+        <MaterialCard
+          key={material.id}
+          material={material}
+          showNewBadge={index < showNewBadgeCount}
+        />
+      ))}
+    </div>
+  );
+}
+
 function getThumbnailGradient(certificationName: string): string {
   const name = certificationName.toLowerCase();
 
@@ -103,11 +216,25 @@ export default async function Home() {
     .select(
       "id, title, certification_name, cover_image_url, price, created_at, reviews(rating)",
     )
-    .eq("is_published", true)
-    .order("created_at", { ascending: false })
-    .limit(12);
+    .eq("is_published", true);
 
-  const items = ((materials ?? []) as MaterialRow[]).map(toPopularMaterial);
+  const allItems = ((materials ?? []) as MaterialRow[]).map(toPopularMaterial);
+
+  const popularItems = allItems
+    .filter((m) => m.reviewCount > 0)
+    .sort((a, b) => {
+      if (b.averageRating !== a.averageRating) {
+        return b.averageRating - a.averageRating;
+      }
+      return b.reviewCount - a.reviewCount;
+    });
+
+  const newItems = allItems
+    .filter((m) => m.reviewCount === 0)
+    .sort(
+      (a, b) =>
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+    );
 
   return (
     <div className="min-h-screen bg-[#FFF5F5]">
@@ -188,106 +315,26 @@ export default async function Home() {
         </section>
 
         {/* ④ 人気の問題集 */}
-        <section id="materials" className="pb-12">
+        <section id="materials" className="pb-10">
           <h2 className="mb-6 text-base font-bold text-gray-900 sm:text-lg">
             人気の問題集
           </h2>
+          <MaterialGrid
+            items={popularItems}
+            emptyMessage="レビュー付きの問題集はまだありません"
+          />
+        </section>
 
-          {items.length === 0 ? (
-            <div className="flex min-h-48 items-center justify-center rounded-[10px] border-[0.5px] border-gray-200 bg-white py-16">
-              <p className="text-sm text-gray-500">
-                まだ出品されている問題集はありません
-              </p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {items.map((material, index) => (
-                <Link
-                  key={material.id}
-                  href={`/material/${material.id}`}
-                  className="group flex flex-col overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
-                >
-                  {/* 上半分：正方形の画像エリア */}
-                  <div
-                    className="relative w-full shrink-0"
-                    style={{ paddingTop: "100%" }}
-                  >
-                    {index < 3 && (
-                      <span className="absolute top-2 right-2 z-10 rounded bg-[#DE2261] px-1.5 py-0.5 text-[10px] font-bold text-white">
-                        NEW
-                      </span>
-                    )}
-                    {material.cover_image_url ? (
-                      <img
-                        src={material.cover_image_url}
-                        alt={material.title}
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: "100%",
-                          height: "100%",
-                          objectFit: "cover",
-                        }}
-                      />
-                    ) : (
-                      <div
-                        style={{
-                          position: "absolute",
-                          top: 0,
-                          left: 0,
-                          width: "100%",
-                          height: "100%",
-                          background: getThumbnailGradient(
-                            material.certification_name,
-                          ),
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
-                        <span
-                          style={{
-                            color: "#fff",
-                            fontSize: "13px",
-                            fontWeight: 500,
-                            padding: "0 12px",
-                            textAlign: "center",
-                          }}
-                        >
-                          {material.certification_name}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* 下半分：資格名・タイトル・価格 */}
-                  <div className="flex flex-col" style={{ padding: "10px 12px" }}>
-                    <p className="text-[10px] text-[#DE2261]">
-                      {material.certification_name}
-                    </p>
-                    <h3 className="mt-1 line-clamp-2 text-xs font-medium text-gray-900">
-                      {material.title}
-                    </h3>
-                    {material.reviewCount > 0 && (
-                      <div className="mt-1.5 flex items-center gap-1">
-                        <StarRating
-                          rating={material.averageRating}
-                          size="sm"
-                        />
-                        <span className="text-[10px] text-gray-500">
-                          ({material.reviewCount})
-                        </span>
-                      </div>
-                    )}
-                    <p className="mt-1.5 text-sm font-medium text-[#DE2261]">
-                      {formatPrice(material.price)}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+        {/* ⑤ 新着商品 */}
+        <section id="new-arrivals" className="pb-12">
+          <h2 className="mb-6 text-base font-bold text-gray-900 sm:text-lg">
+            新着商品
+          </h2>
+          <MaterialGrid
+            items={newItems}
+            emptyMessage="新着の問題集はありません"
+            showNewBadgeCount={3}
+          />
         </section>
       </main>
 
