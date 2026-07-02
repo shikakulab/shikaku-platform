@@ -31,19 +31,44 @@ export async function MaterialPurchaseCard({
   const stripePaymentLink = payment?.stripePaymentLink ?? "";
 
   return (
-    <div className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
-      {coverImageUrl ? (
-        <img
-          src={coverImageUrl}
-          alt={title}
-          className="block h-[140px] w-full object-cover"
-        />
-      ) : (
-        <div className="flex h-[140px] w-full items-center justify-center bg-gray-100 text-sm text-gray-400">
-          カバー画像なし
-        </div>
-      )}
+    <div className="flex flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-lg">
+      {/* 上半分：正方形の画像エリア */}
+      <div className="relative w-full shrink-0" style={{ paddingTop: "100%" }}>
+        {coverImageUrl ? (
+          <img
+            src={coverImageUrl}
+            alt={title}
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#f3f4f6",
+              color: "#9ca3af",
+              fontSize: "14px",
+            }}
+          >
+            カバー画像なし
+          </div>
+        )}
+      </div>
 
+      {/* 下半分：価格・購入ボタン */}
       <div className="p-5">
         <p className="text-3xl font-bold text-gray-900">
           {price > 0 ? `¥${price.toLocaleString("ja-JP")}` : "無料"}
