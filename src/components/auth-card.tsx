@@ -17,7 +17,7 @@ export function AuthCard({ title, children, alternateLink }: AuthCardProps) {
       <div className="w-full max-w-md rounded-lg bg-white p-8 shadow-md">
         <Link
           href="/"
-          className="mb-6 block text-center text-2xl font-bold text-[#E91E63]"
+          className="mb-6 block text-center text-2xl font-bold text-[#DE2261]"
         >
           Studyフリマ
         </Link>
@@ -29,7 +29,7 @@ export function AuthCard({ title, children, alternateLink }: AuthCardProps) {
           {alternateLink.label}{" "}
           <Link
             href={alternateLink.href}
-            className="font-medium text-[#E91E63] underline-offset-4 hover:underline"
+            className="font-medium text-[#DE2261] underline-offset-4 hover:underline"
           >
             {alternateLink.linkText}
           </Link>

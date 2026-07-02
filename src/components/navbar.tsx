@@ -8,7 +8,7 @@ export function Navbar() {
       <div className="mx-auto flex h-14 max-w-[1200px] items-center gap-4 px-4">
         <Link
           href="/"
-          className="shrink-0 text-[20px] font-medium text-[#E05050] transition-opacity hover:opacity-80"
+          className="shrink-0 text-[20px] font-medium text-[#DE2261] transition-opacity hover:opacity-80"
         >
           Studyフリマ
         </Link>
@@ -18,26 +18,26 @@ export function Navbar() {
           <input
             type="search"
             placeholder="資格名・キーワードで検索"
-            className="h-[38px] w-full rounded-[20px] bg-gray-100 px-4 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#E05050]/20"
+            className="h-[38px] w-full rounded-[20px] bg-gray-100 px-4 text-sm text-gray-900 placeholder:text-gray-500 focus:outline-none focus:ring-2 focus:ring-[#DE2261]/20"
           />
         </label>
 
         <nav className="flex shrink-0 items-center gap-3 sm:gap-4">
           <Link
             href="/sell/new"
-            className="hidden text-sm text-gray-700 transition-colors hover:text-[#E05050] sm:inline"
+            className="hidden text-sm text-gray-700 transition-colors hover:text-[#DE2261] sm:inline"
           >
             出品する
           </Link>
           <Link
             href="/dashboard"
-            className="text-sm text-gray-700 transition-colors hover:text-[#E05050]"
+            className="text-sm text-gray-700 transition-colors hover:text-[#DE2261]"
           >
             ダッシュボード
           </Link>
           <Link
             href="/generate"
-            className="rounded-2xl bg-[#E05050] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#c94040]"
+            className="rounded-2xl bg-[#DE2261] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#B81D52]"
           >
             問題集を作る
           </Link>

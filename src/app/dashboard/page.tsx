@@ -63,13 +63,13 @@ export default async function DashboardPage() {
             <div className="flex flex-wrap items-center gap-3">
               <Link
                 href="/generate"
-                className="inline-flex items-center justify-center rounded-full bg-[#E91E63] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#C2185B]"
+                className="inline-flex items-center justify-center rounded-full bg-[#DE2261] px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#B81D52]"
               >
                 新しい問題集を作る
               </Link>
               <Link
                 href="/sell/new"
-                className="inline-flex items-center justify-center rounded-full border border-[#E91E63] bg-white px-5 py-2.5 text-sm font-medium text-[#E91E63] transition-colors hover:bg-[#FDF2F7]"
+                className="inline-flex items-center justify-center rounded-full border border-[#DE2261] bg-white px-5 py-2.5 text-sm font-medium text-[#DE2261] transition-colors hover:bg-[#FDF2F7]"
               >
                 PDFを出品する
               </Link>

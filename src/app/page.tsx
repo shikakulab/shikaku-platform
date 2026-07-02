@@ -82,7 +82,7 @@ function getThumbnailGradient(certificationName: string): string {
       name,
     )
   ) {
-    return "linear-gradient(135deg, #E05050, #FF8C8C)";
+    return "linear-gradient(135deg, #DE2261, #FF6B8C)";
   }
 
   if (/簿記|診断士|会計士|経営/.test(name)) {
@@ -93,7 +93,7 @@ function getThumbnailGradient(certificationName: string): string {
     return "linear-gradient(135deg, #9B59B6, #C39BD3)";
   }
 
-  return "linear-gradient(135deg, #E05050, #FF7878)";
+  return "linear-gradient(135deg, #DE2261, #FF6B8C)";
 }
 
 export default async function Home() {
@@ -115,23 +115,23 @@ export default async function Home() {
 
       {/* ① ヒーローセクション */}
       <section
-        className="pt-14 text-white"
+        className="text-white"
         style={{
-          background: "linear-gradient(135deg, #E05050 0%, #FF7878 100%)",
-          padding: "40px 32px",
+          background: "linear-gradient(135deg, #DE2261 0%, #FF6B8C 100%)",
+          padding: "80px 32px 40px",
         }}
       >
         <div className="mx-auto max-w-[1200px] text-center">
           <h1 className="text-2xl font-bold leading-snug sm:text-3xl lg:text-4xl">
-            合格者の知識から生まれた、本物の予想問題集
+            あなたの知的財産をシェア
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base">
-            資格保持者がAIと共に作成した問題集で、効率よく合格を目指そう
+            資格保持者がAIと共に作成した問題集を出品・販売しよう
           </p>
-          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+          <div className="mt-8 flex w-full flex-col items-center justify-center gap-3 sm:flex-row sm:justify-center">
             <Link
               href="#materials"
-              className="inline-flex min-w-[160px] items-center justify-center rounded-2xl bg-white px-6 py-2.5 text-sm font-medium text-[#E05050] transition-opacity hover:opacity-90"
+              className="inline-flex min-w-[160px] items-center justify-center rounded-2xl bg-white px-6 py-2.5 text-sm font-medium text-[#DE2261] transition-opacity hover:opacity-90"
             >
               問題集を探す
             </Link>
@@ -167,7 +167,7 @@ export default async function Home() {
                 className="overflow-hidden rounded-lg border-[0.5px] border-gray-200 bg-white"
               >
                 <div
-                  className="bg-[#E05050] px-2.5 py-1.5 text-[11px] font-medium text-white"
+                  className="bg-[#DE2261] text-[11px] font-medium text-white"
                   style={{ padding: "6px 10px" }}
                 >
                   {category.name}
@@ -175,7 +175,7 @@ export default async function Home() {
                 <ul>
                   {category.items.map((item) => (
                     <li key={item}>
-                      <span className="flex cursor-default items-center justify-between px-3 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-50 hover:text-[#E05050]">
+                      <span className="flex cursor-default items-center justify-between px-3 py-2.5 text-sm text-gray-700 transition-all duration-150 hover:bg-gray-50 hover:text-[#DE2261]">
                         <span>{item}</span>
                         <span className="text-xs text-gray-400">&gt;</span>
                       </span>
@@ -201,22 +201,28 @@ export default async function Home() {
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-              {items.map((material) => (
+              {items.map((material, index) => (
                 <Link
                   key={material.id}
                   href={`/material/${material.id}`}
-                  className="group overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+                  className="group relative overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
                 >
+                  {index < 3 && (
+                    <span className="absolute top-2 right-2 z-10 rounded bg-[#DE2261] px-1.5 py-0.5 text-[10px] font-bold text-white">
+                      NEW
+                    </span>
+                  )}
                   {material.cover_image_url ? (
                     <img
                       src={material.cover_image_url}
                       alt={material.title}
-                      className="h-[120px] w-full object-cover"
+                      className="block h-[140px] w-full object-cover"
                     />
                   ) : (
                     <div
-                      className="flex h-[120px] w-full items-center justify-center px-3"
+                      className="flex h-[140px] w-full items-center justify-center px-3"
                       style={{
+                        height: "140px",
                         background: getThumbnailGradient(
                           material.certification_name,
                         ),
@@ -228,7 +234,7 @@ export default async function Home() {
                     </div>
                   )}
                   <div style={{ padding: "10px 12px" }}>
-                    <p className="text-[10px] text-[#E05050]">
+                    <p className="text-[10px] text-[#DE2261]">
                       {material.certification_name}
                     </p>
                     <h3 className="mt-1 line-clamp-2 text-xs font-medium text-gray-900">
@@ -245,7 +251,7 @@ export default async function Home() {
                         </span>
                       </div>
                     )}
-                    <p className="mt-1.5 text-sm font-medium text-[#E05050]">
+                    <p className="mt-1.5 text-sm font-medium text-[#DE2261]">
                       {formatPrice(material.price)}
                     </p>
                   </div>

@@ -16,12 +16,12 @@ type SaveResponse =
   | { error: string };
 
 const inputClassName =
-  "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-[#FF6B6B] focus:outline-none focus:ring-1 focus:ring-[#FF6B6B]";
+  "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-[#DE2261] focus:outline-none focus:ring-1 focus:ring-[#DE2261]";
 
 const textareaClassName = `${inputClassName} resize-y`;
 
 const buttonClassName =
-  "w-full rounded-full bg-[#FF6B6B] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#e85555] disabled:cursor-not-allowed disabled:opacity-60";
+  "w-full rounded-full bg-[#DE2261] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#B81D52] disabled:cursor-not-allowed disabled:opacity-60";
 
 function fileToBase64(
   file: File,
@@ -252,7 +252,7 @@ export default function GeneratePage() {
                 onClick={() => setActiveTab("text")}
                 className={`px-4 pb-3 text-sm font-medium transition-colors ${
                   activeTab === "text"
-                    ? "border-b-2 border-[#FF6B6B] text-[#FF6B6B]"
+                    ? "border-b-2 border-[#DE2261] text-[#DE2261]"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -263,7 +263,7 @@ export default function GeneratePage() {
                 onClick={() => setActiveTab("note")}
                 className={`px-4 pb-3 text-sm font-medium transition-colors ${
                   activeTab === "note"
-                    ? "border-b-2 border-[#FF6B6B] text-[#FF6B6B]"
+                    ? "border-b-2 border-[#DE2261] text-[#DE2261]"
                     : "text-gray-500 hover:text-gray-700"
                 }`}
               >
@@ -371,7 +371,7 @@ export default function GeneratePage() {
                   </p>
                 )}
 
-                <div className="rounded-md border border-[#FF6B6B] bg-[#FFF3CD] px-4 py-3 text-sm leading-relaxed text-gray-800">
+                <div className="rounded-md border border-[#DE2261] bg-[#FFF3CD] px-4 py-3 text-sm leading-relaxed text-gray-800">
                   ⚠️ 注意：市販の教科書・参考書・問題集の写真アップロードは禁止です。
                   ご自身が作成した手書きノートのみアップロードしてください。
                   違反した場合はアカウントを停止します。
@@ -390,7 +390,7 @@ export default function GeneratePage() {
                     type="file"
                     accept="image/*"
                     onChange={handleImageChange}
-                    className="block w-full text-sm text-gray-600 file:mr-3 file:rounded-md file:border-0 file:bg-[#FF6B6B] file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:bg-[#e85555]"
+                    className="block w-full text-sm text-gray-600 file:mr-3 file:rounded-md file:border-0 file:bg-[#DE2261] file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-white hover:file:bg-[#e85555]"
                   />
                   {noteImagePreview && (
                     <div className="relative mt-3">

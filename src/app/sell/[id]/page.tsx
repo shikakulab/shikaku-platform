@@ -7,12 +7,12 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const inputClassName =
-  "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-[#E91E63] focus:outline-none focus:ring-1 focus:ring-[#E91E63]";
+  "w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-gray-900 placeholder:text-gray-400 focus:border-[#DE2261] focus:outline-none focus:ring-1 focus:ring-[#DE2261]";
 
 const textareaClassName = `${inputClassName} resize-y`;
 
 const buttonClassName =
-  "w-full rounded-full bg-[#E91E63] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#C2185B] disabled:cursor-not-allowed disabled:opacity-60";
+  "w-full rounded-full bg-[#DE2261] px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-[#B81D52] disabled:cursor-not-allowed disabled:opacity-60";
 
 async function uploadFile(
   file: File,
@@ -250,7 +250,7 @@ export default function SellPage() {
           <h1 className="text-2xl font-semibold text-gray-900">{pageTitle}</h1>
           <Link
             href="/dashboard"
-            className="text-sm font-medium text-[#E91E63] underline-offset-4 hover:underline"
+            className="text-sm font-medium text-[#DE2261] underline-offset-4 hover:underline"
           >
             ダッシュボードへ
           </Link>
@@ -265,7 +265,7 @@ export default function SellPage() {
             <p className="text-sm text-gray-600">{error}</p>
             <Link
               href="/dashboard"
-              className="mt-4 inline-block text-sm font-medium text-[#E91E63] underline-offset-4 hover:underline"
+              className="mt-4 inline-block text-sm font-medium text-[#DE2261] underline-offset-4 hover:underline"
             >
               ダッシュボードに戻る
             </Link>
@@ -337,7 +337,7 @@ export default function SellPage() {
                   accept=".pdf"
                   onChange={handlePdfChange}
                   disabled={uploading || submitting}
-                  className="w-full text-sm text-gray-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#E91E63] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#C2185B]"
+                  className="w-full text-sm text-gray-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#DE2261] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#B81D52]"
                 />
                 {pdfFileName && (
                   <p className="mt-2 text-sm text-gray-600">
@@ -400,7 +400,7 @@ export default function SellPage() {
                 accept="image/*"
                 onChange={handleImageChange}
                 disabled={uploading || submitting}
-                className="w-full text-sm text-gray-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#E91E63] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#C2185B]"
+                className="w-full text-sm text-gray-700 file:mr-4 file:rounded-full file:border-0 file:bg-[#DE2261] file:px-4 file:py-2 file:text-sm file:font-medium file:text-white hover:file:bg-[#B81D52]"
               />
               {(uploading || uploadStatus) && (
                 <p className="mt-2 text-sm text-gray-500">

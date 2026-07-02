@@ -60,19 +60,19 @@ export function MaterialCard({
         <h3 className="line-clamp-2 text-base font-semibold text-gray-900">
           {title}
         </h3>
-        <p className="mt-2 text-sm text-[#E91E63]">{certificationName}</p>
+        <p className="mt-2 text-sm text-[#DE2261]">{certificationName}</p>
         <p className="mt-3 text-xs text-gray-500">{createdAtLabel}</p>
       </Link>
 
       <div className="mt-4 flex flex-wrap items-center gap-2">
         {isPublished ? (
           <>
-            <span className="inline-block rounded-full bg-[#E91E63] px-3 py-1 text-xs font-medium text-white">
+            <span className="inline-block rounded-full bg-[#DE2261] px-3 py-1 text-xs font-medium text-white">
               出品中
             </span>
             <Link
               href={`/sell/${id}`}
-              className="inline-block rounded-full border border-[#E91E63] px-3 py-1 text-xs font-medium text-[#E91E63] transition-colors hover:bg-[#E91E63] hover:text-white"
+              className="inline-block rounded-full border border-[#DE2261] px-3 py-1 text-xs font-medium text-[#DE2261] transition-colors hover:bg-[#DE2261] hover:text-white"
             >
               編集
             </Link>
@@ -81,7 +81,7 @@ export function MaterialCard({
           isAiGenerated && (
             <Link
               href={`/sell/${id}`}
-              className="inline-block rounded-full border border-[#E91E63] px-4 py-1.5 text-sm font-medium text-[#E91E63] transition-colors hover:bg-[#E91E63] hover:text-white"
+              className="inline-block rounded-full border border-[#DE2261] px-4 py-1.5 text-sm font-medium text-[#DE2261] transition-colors hover:bg-[#DE2261] hover:text-white"
             >
               出品する
             </Link>

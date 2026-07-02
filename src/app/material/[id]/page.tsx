@@ -89,7 +89,7 @@ function getReviewerName(review: ReviewRow): string {
 function CheckItem({ children }: { children: ReactNode }) {
   return (
     <li className="flex items-start gap-3 text-sm text-gray-800">
-      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#E91E63]/10 text-xs font-bold text-[#E91E63]">
+      <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#DE2261]/10 text-xs font-bold text-[#DE2261]">
         ✓
       </span>
       <span>{children}</span>
@@ -134,7 +134,7 @@ export default async function MaterialPage({ params, searchParams }: PageProps) 
             <p className="text-gray-600">問題集が見つかりません</p>
             <Link
               href={user ? "/dashboard" : "/"}
-              className="mt-4 inline-block text-sm font-medium text-[#E91E63] underline-offset-4 hover:underline"
+              className="mt-4 inline-block text-sm font-medium text-[#DE2261] underline-offset-4 hover:underline"
             >
               {user ? "ダッシュボードに戻る" : "トップへ戻る"}
             </Link>
@@ -210,7 +210,7 @@ export default async function MaterialPage({ params, searchParams }: PageProps) 
       </Suspense>
 
       {/* ヒーローヘッダー */}
-      <section className="bg-gradient-to-br from-[#C2185B] to-[#E91E63] pt-16 text-white">
+      <section className="bg-gradient-to-br from-[#B81D52] to-[#DE2261] pt-16 text-white">
         <div className="mx-auto max-w-6xl px-4 py-8 sm:py-10">
           <nav className="mb-4 text-xs text-white/70">
             <Link href="/" className="hover:text-white">
@@ -386,7 +386,7 @@ export default async function MaterialPage({ params, searchParams }: PageProps) 
 
             <Link
               href={user ? "/dashboard" : "/"}
-              className="mt-4 inline-block text-sm font-medium text-[#E91E63] underline-offset-4 hover:underline"
+              className="mt-4 inline-block text-sm font-medium text-[#DE2261] underline-offset-4 hover:underline"
             >
               {user ? "ダッシュボードに戻る" : "トップへ戻る"}
             </Link>
