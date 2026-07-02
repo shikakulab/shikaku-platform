@@ -1,3 +1,4 @@
+import { CategoryTabBar } from "@/components/category-tab-bar";
 import { Navbar } from "@/components/navbar";
 import { StarRating } from "@/components/star-rating";
 import { createClient } from "@/lib/supabase/server";
@@ -5,8 +6,8 @@ import Link from "next/link";
 
 const CERTIFICATION_CATEGORIES = [
   {
-    name: "法務・労務",
-    items: ["司法試験", "行政書士試験", "社会保険労務士試験"],
+    name: "IT・データサイエンス",
+    items: ["ITパスポート", "基本情報技術者", "AWS認定"],
   },
   {
     name: "不動産",
@@ -17,16 +18,16 @@ const CERTIFICATION_CATEGORIES = [
     items: ["日商簿記", "中小企業診断士", "公認会計士"],
   },
   {
-    name: "金融",
-    items: ["FP技能検定", "証券アナリスト"],
-  },
-  {
-    name: "IT・データサイエンス",
-    items: ["ITパスポート", "基本情報技術者", "AWS認定"],
-  },
-  {
     name: "語学",
     items: ["TOEIC", "英検", "TOEFL"],
+  },
+  {
+    name: "金融",
+    items: ["FP技能検定", "証券アナリスト", "貸金業務取扱主任者"],
+  },
+  {
+    name: "法務・労務",
+    items: ["行政書士試験", "社会保険労務士", "司法書士試験"],
   },
 ] as const;
 
@@ -65,6 +66,36 @@ function toPopularMaterial(material: MaterialRow): PopularMaterial {
   return { ...material, reviewCount, averageRating };
 }
 
+function getThumbnailGradient(certificationName: string): string {
+  const name = certificationName.toLowerCase();
+
+  if (
+    /itパスポート|基本情報|aws|データサイエンス|情報処理|プログラミング|python|java/.test(
+      name,
+    )
+  ) {
+    return "linear-gradient(135deg, #4A90D9, #78B4F0)";
+  }
+
+  if (
+    /宅建|マンション|不動産|行政書士|社会保険|司法|法務|労務|司法書士/.test(
+      name,
+    )
+  ) {
+    return "linear-gradient(135deg, #E05050, #FF8C8C)";
+  }
+
+  if (/簿記|診断士|会計士|経営/.test(name)) {
+    return "linear-gradient(135deg, #52B76B, #7FD496)";
+  }
+
+  if (/toeic|英検|toefl|語学|英語/.test(name)) {
+    return "linear-gradient(135deg, #9B59B6, #C39BD3)";
+  }
+
+  return "linear-gradient(135deg, #E05050, #FF7878)";
+}
+
 export default async function Home() {
   const supabase = await createClient();
   const { data: materials } = await supabase
@@ -72,66 +103,81 @@ export default async function Home() {
     .select(
       "id, title, certification_name, cover_image_url, price, created_at, reviews(rating)",
     )
-    .eq("is_published", true);
+    .eq("is_published", true)
+    .order("created_at", { ascending: false })
+    .limit(12);
 
-  const items = ((materials ?? []) as MaterialRow[])
-    .map(toPopularMaterial)
-    .sort((a, b) => {
-      if (b.reviewCount !== a.reviewCount) {
-        return b.reviewCount - a.reviewCount;
-      }
-      return (
-        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-      );
-    });
+  const items = ((materials ?? []) as MaterialRow[]).map(toPopularMaterial);
 
   return (
-    <div className="min-h-screen bg-[#FDF2F7]">
+    <div className="min-h-screen bg-[#FFF5F5]">
       <Navbar />
 
       {/* ① ヒーローセクション */}
-      <section className="bg-gradient-to-br from-[#E91E63] to-[#F06292] px-4 pt-24 pb-16 text-white">
+      <section
+        className="pt-14 text-white"
+        style={{
+          background: "linear-gradient(135deg, #E05050 0%, #FF7878 100%)",
+          padding: "40px 32px",
+        }}
+      >
         <div className="mx-auto max-w-[1200px] text-center">
-          <h1 className="text-3xl font-bold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
-            Studyフリマ
+          <h1 className="text-2xl font-bold leading-snug sm:text-3xl lg:text-4xl">
+            合格者の知識から生まれた、本物の予想問題集
           </h1>
-          <p className="mx-auto mt-5 max-w-2xl text-base leading-relaxed text-white/90 sm:text-lg">
-            資格保持者が作成・AIが生成した問題集で、効率よく合格を目指そう
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-relaxed text-white/90 sm:text-base">
+            資格保持者がAIと共に作成した問題集で、効率よく合格を目指そう
           </p>
-          <div className="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <Link
               href="#materials"
-              className="inline-flex min-w-[180px] items-center justify-center rounded-full bg-white px-8 py-3 text-sm font-semibold text-[#E91E63] transition-opacity hover:opacity-90"
+              className="inline-flex min-w-[160px] items-center justify-center rounded-2xl bg-white px-6 py-2.5 text-sm font-medium text-[#E05050] transition-opacity hover:opacity-90"
             >
               問題集を探す
             </Link>
             <Link
               href="/generate"
-              className="inline-flex min-w-[180px] items-center justify-center rounded-full border-2 border-white px-8 py-3 text-sm font-semibold text-white transition-colors hover:bg-white/10"
+              className="inline-flex min-w-[160px] items-center justify-center rounded-2xl border border-white px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/10"
             >
-              問題集を作る
+              無料で問題集を作る
             </Link>
           </div>
         </div>
       </section>
 
       <main className="mx-auto max-w-[1200px] px-4">
-        {/* ② 資格カテゴリ一覧 */}
-        <section className="py-16">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* ② タブバー */}
+        <section className="pt-6">
+          <CategoryTabBar />
+        </section>
+
+        {/* ③ カテゴリセクション */}
+        <section className="py-10">
+          <div className="mb-6 flex items-center gap-4">
+            <h2 className="shrink-0 text-base font-bold text-gray-900 sm:text-lg">
+              資格カテゴリから探す
+            </h2>
+            <div className="h-px flex-1 bg-gray-200" />
+          </div>
+
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {CERTIFICATION_CATEGORIES.map((category) => (
               <div
                 key={category.name}
-                className="overflow-hidden rounded-lg border border-gray-200"
+                className="overflow-hidden rounded-lg border-[0.5px] border-gray-200 bg-white"
               >
-                <div className="bg-[#FF6B6B] px-4 py-3 text-sm font-bold text-white">
+                <div
+                  className="bg-[#E05050] px-2.5 py-1.5 text-[11px] font-medium text-white"
+                  style={{ padding: "6px 10px" }}
+                >
                   {category.name}
                 </div>
-                <ul className="bg-white">
+                <ul>
                   {category.items.map((item) => (
                     <li key={item}>
-                      <span className="block cursor-default px-4 py-2.5 text-sm text-gray-600 transition-colors hover:text-[#FF6B6B]">
-                        {item}
+                      <span className="flex cursor-default items-center justify-between px-3 py-2.5 text-sm text-gray-700 transition-colors hover:bg-gray-50 hover:text-[#E05050]">
+                        <span>{item}</span>
+                        <span className="text-xs text-gray-400">&gt;</span>
                       </span>
                     </li>
                   ))}
@@ -141,58 +187,65 @@ export default async function Home() {
           </div>
         </section>
 
-        {/* ③ 人気の問題集 */}
-        <section id="materials" className="pb-16">
-          <h2 className="mb-8 text-xl font-bold text-[#333333] sm:text-2xl">
+        {/* ④ 人気の問題集 */}
+        <section id="materials" className="pb-12">
+          <h2 className="mb-6 text-base font-bold text-gray-900 sm:text-lg">
             人気の問題集
           </h2>
 
           {items.length === 0 ? (
-            <div className="flex min-h-48 items-center justify-center rounded-xl bg-white py-16 shadow-sm">
-              <p className="text-[#888888]">
+            <div className="flex min-h-48 items-center justify-center rounded-[10px] border-[0.5px] border-gray-200 bg-white py-16">
+              <p className="text-sm text-gray-500">
                 まだ出品されている問題集はありません
               </p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {items.map((material) => (
                 <Link
                   key={material.id}
                   href={`/material/${material.id}`}
-                  className="group overflow-hidden rounded-lg border border-gray-200 bg-white transition-shadow hover:shadow-md"
+                  className="group overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
                 >
                   {material.cover_image_url ? (
                     <img
                       src={material.cover_image_url}
                       alt={material.title}
-                      className="aspect-[16/9] w-full object-cover"
+                      className="h-[120px] w-full object-cover"
                     />
                   ) : (
-                    <div className="flex aspect-[16/9] w-full items-center justify-center bg-gradient-to-br from-[#FF6B6B] to-[#FF8E8E] px-4">
-                      <span className="text-center text-sm font-bold text-white sm:text-base">
+                    <div
+                      className="flex h-[120px] w-full items-center justify-center px-3"
+                      style={{
+                        background: getThumbnailGradient(
+                          material.certification_name,
+                        ),
+                      }}
+                    >
+                      <span className="text-center text-xs font-medium text-white sm:text-sm">
                         {material.certification_name}
                       </span>
                     </div>
                   )}
-                  <div className="p-4">
-                    <h3 className="line-clamp-2 text-base font-bold text-[#333333] group-hover:text-[#FF6B6B]">
-                      {material.title}
-                    </h3>
-                    <p className="mt-1 text-xs text-gray-500">
+                  <div style={{ padding: "10px 12px" }}>
+                    <p className="text-[10px] text-[#E05050]">
                       {material.certification_name}
                     </p>
+                    <h3 className="mt-1 line-clamp-2 text-xs font-medium text-gray-900">
+                      {material.title}
+                    </h3>
                     {material.reviewCount > 0 && (
-                      <div className="mt-2 flex items-center gap-1.5">
+                      <div className="mt-1.5 flex items-center gap-1">
                         <StarRating
                           rating={material.averageRating}
                           size="sm"
                         />
-                        <span className="text-xs text-gray-500">
+                        <span className="text-[10px] text-gray-500">
                           ({material.reviewCount})
                         </span>
                       </div>
                     )}
-                    <p className="mt-3 text-lg font-bold text-[#FF6B6B]">
+                    <p className="mt-1.5 text-sm font-medium text-[#E05050]">
                       {formatPrice(material.price)}
                     </p>
                   </div>
@@ -202,6 +255,20 @@ export default async function Home() {
           )}
         </section>
       </main>
+
+      {/* ⑤ フッター */}
+      <footer className="border-t border-gray-200 bg-gray-50 py-6">
+        <div className="mx-auto max-w-[1200px] px-4 text-center text-xs text-gray-500">
+          <p>© 2026 Studyフリマ</p>
+          <p className="mt-2">
+            <span className="cursor-default hover:text-gray-700">利用規約</span>
+            <span className="mx-2">·</span>
+            <span className="cursor-default hover:text-gray-700">
+              プライバシーポリシー
+            </span>
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }
