@@ -213,24 +213,59 @@ export default async function Home() {
                     </span>
                   )}
                   {material.cover_image_url ? (
-                    <img
-                      src={material.cover_image_url}
-                      alt={material.title}
-                      className="block h-[140px] w-full object-cover"
-                    />
-                  ) : (
                     <div
-                      className="flex h-[140px] w-full items-center justify-center px-3"
                       style={{
-                        height: "140px",
-                        background: getThumbnailGradient(
-                          material.certification_name,
-                        ),
+                        position: "relative",
+                        width: "100%",
+                        paddingTop: "100%",
                       }}
                     >
-                      <span className="text-center text-xs font-medium text-white sm:text-sm">
-                        {material.certification_name}
-                      </span>
+                      <img
+                        src={material.cover_image_url}
+                        alt={material.title}
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                        }}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      style={{
+                        position: "relative",
+                        width: "100%",
+                        paddingTop: "100%",
+                      }}
+                    >
+                      <div
+                        style={{
+                          position: "absolute",
+                          top: 0,
+                          left: 0,
+                          width: "100%",
+                          height: "100%",
+                          background: getThumbnailGradient(
+                            material.certification_name,
+                          ),
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "center",
+                        }}
+                      >
+                        <span
+                          style={{
+                            color: "#fff",
+                            fontSize: "13px",
+                            fontWeight: 500,
+                          }}
+                        >
+                          {material.certification_name}
+                        </span>
+                      </div>
                     </div>
                   )}
                   <div style={{ padding: "10px 12px" }}>
