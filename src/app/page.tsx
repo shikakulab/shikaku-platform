@@ -205,21 +205,19 @@ export default async function Home() {
                 <Link
                   key={material.id}
                   href={`/material/${material.id}`}
-                  className="group relative overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
+                  className="group flex flex-col overflow-hidden rounded-[10px] border-[0.5px] border-gray-200 bg-white transition-shadow hover:shadow-[0_4px_16px_rgba(0,0,0,0.08)]"
                 >
-                  {index < 3 && (
-                    <span className="absolute top-2 right-2 z-10 rounded bg-[#DE2261] px-1.5 py-0.5 text-[10px] font-bold text-white">
-                      NEW
-                    </span>
-                  )}
-                  {material.cover_image_url ? (
-                    <div
-                      style={{
-                        position: "relative",
-                        width: "100%",
-                        paddingTop: "100%",
-                      }}
-                    >
+                  {/* 上半分：正方形の画像エリア */}
+                  <div
+                    className="relative w-full shrink-0"
+                    style={{ paddingTop: "100%" }}
+                  >
+                    {index < 3 && (
+                      <span className="absolute top-2 right-2 z-10 rounded bg-[#DE2261] px-1.5 py-0.5 text-[10px] font-bold text-white">
+                        NEW
+                      </span>
+                    )}
+                    {material.cover_image_url ? (
                       <img
                         src={material.cover_image_url}
                         alt={material.title}
@@ -232,15 +230,7 @@ export default async function Home() {
                           objectFit: "cover",
                         }}
                       />
-                    </div>
-                  ) : (
-                    <div
-                      style={{
-                        position: "relative",
-                        width: "100%",
-                        paddingTop: "100%",
-                      }}
-                    >
+                    ) : (
                       <div
                         style={{
                           position: "absolute",
@@ -261,14 +251,18 @@ export default async function Home() {
                             color: "#fff",
                             fontSize: "13px",
                             fontWeight: 500,
+                            padding: "0 12px",
+                            textAlign: "center",
                           }}
                         >
                           {material.certification_name}
                         </span>
                       </div>
-                    </div>
-                  )}
-                  <div style={{ padding: "10px 12px" }}>
+                    )}
+                  </div>
+
+                  {/* 下半分：資格名・タイトル・価格 */}
+                  <div className="flex flex-col" style={{ padding: "10px 12px" }}>
                     <p className="text-[10px] text-[#DE2261]">
                       {material.certification_name}
                     </p>
